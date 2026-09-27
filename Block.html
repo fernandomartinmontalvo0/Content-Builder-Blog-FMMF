@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Editor de Banner</title>
+
+  <script src="blocksdk.js"></script>
+</head>
+
+<body>
+
+  <h3>Editor de Banner</h3>
+
+  <label>Texto:</label><br>
+  <input type="text" id="texto" placeholder="Escribe aquí"><br><br>
+
+  <label>Color de fondo:</label><br>
+  <input type="color" id="color" value="#ffffff"><br><br>
+
+  <script>
+    var sdk = new window.sfdc.BlockSDK();
+
+    sdk.getData(function(data) {
+      if (data) {
+        document.getElementById("texto").value = data.texto || '';
+        document.getElementById("color").value = data.color || '#ffffff';
+      }
+    });
+
+    function guardar() {
+      var texto = document.getElementById("texto").value;
+      var color = document.getElementById("color").value;
+
+      sdk.setData({
+        texto: texto,
+        color: color
+      });
+
+      var contenido =
+        '<div style="background-color:' + color + '; padding:20px;">' +
+          texto +
+        '</div>';
+
+      sdk.setContent(contenido);
+    }
+
+    document.getElementById("texto").addEventListener("input", guardar);
+    document.getElementById("color").addEventListener("input", guardar);
+  </script>
+
+</body>
+</html>
